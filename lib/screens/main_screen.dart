@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../components/autenticacion.dart' as auth;
-import '../views/page_productos.dart';
-import '../views/page_ajustes.dart';
-import '../views/page_factura.dart';
-import '../views/page_ganancias.dart';
+import '../pages/productos.dart';
+import '../pages/ajustes.dart';
+import '../pages/facturas.dart';
+import '../pages/ganancias.dart';
 import '../assets/variables.dart' as global;
 
 class MainScreen extends StatefulWidget {
@@ -56,8 +56,8 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screens = [
-      PageFactura(),
+    final pages = [
+      PageFacturas(),
       PageProductos(),
       PageGanancias(),
       PageAjustes()
@@ -65,7 +65,7 @@ class MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: IndexedStack(
         index: currentPageIndex,
-        children: screens,
+        children: pages,
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentPageIndex,

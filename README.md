@@ -1,3 +1,3 @@
 # cajero_salado
 
-A new Flutter project.
+Una aplicacion para organizar ventas de manera eficaz

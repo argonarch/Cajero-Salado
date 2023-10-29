@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Pantalones",
+    "precio": 12.00,
+    "beneficio": 25.00
+  },
+  {
+    "id": 2,
+    "name": "Boxers",
+    "precio": 15.00,
+    "beneficio": 21.00
+  },
+  {
+    "id": 3,
+    "name": "Vedetinas",
+    "precio": 2.00,
+    "beneficio": 12.00
+  }
+]

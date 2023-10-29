@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../assets/variables.dart' as global;
-import '../views/view_select_product.dart' as product;
-import '../views/view_add_product.dart' as product;
+import '../views/select_product.dart' as product;
+import '../views/add_product.dart' as product;
 
 class PageProductos extends StatefulWidget {
   const PageProductos({super.key});
@@ -12,8 +12,9 @@ class PageProductos extends StatefulWidget {
 class _PageProductosState extends State<PageProductos> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [appBarProductos(), Expanded(child: bodyProductos())],
+    return Scaffold(
+      appBar: appBarProductos(),
+      body: bodyProductos()
     );
   }
 

@@ -13,6 +13,7 @@ dependencies:
   hive: ^2.2.3 
   hive_flutter: ^1.1.0
   get_storage: ^2.1.1
+  flutter_settings_ui: ^3.0.0
 
 
 dev_dependencies:

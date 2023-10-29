@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class PageGanancias extends StatefulWidget {
   const PageGanancias({super.key});
+
   @override
   State<PageGanancias> createState() => _PageGananciasState();
 }
@@ -9,22 +10,27 @@ class PageGanancias extends StatefulWidget {
 class _PageGananciasState extends State<PageGanancias> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    final tabs = [
+      'Diario',
+      'Semanal',
+      'Mensual'
+    ];
+    return Scaffold(
+      appBar: appBarGanancias(),
+      body: DefaultTabController(
       initialIndex: 1,
       length: 3,
       child: Column(
         children: [
-          appBarGanancias(),
           TabBar(
-            tabs: <Widget>[
-              Tab(text: 'Diario'),
-              Tab(text: 'Semanal'),
-              Tab(text: 'Mensual'),
+            tabs: [
+              for (final tab in tabs)
+                Tab(text: tab)
             ],
           ),
           Expanded(
             child: TabBarView(
-              children: <Widget>[
+              children: [
                 Center(
                   child: Text("It's cloudy here"),
                 ),
@@ -39,13 +45,14 @@ class _PageGananciasState extends State<PageGanancias> {
           ),
         ],
       ),
+    )
     );
   }
 
   AppBar appBarGanancias() {
     return AppBar(
       title: const Text('Ganancias'),
-      actions: <Widget>[
+      actions: [
         IconButton(
           icon: const Icon(IconData(0xe567, fontFamily: 'MaterialIcons')),
           tooltip: 'Buscador',
