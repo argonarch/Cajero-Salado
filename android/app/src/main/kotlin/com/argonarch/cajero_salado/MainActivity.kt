@@ -1,4 +1,4 @@
-package com.example.cajero_salado
+package com.argonarch.cajero_salado
 
 import io.flutter.embedding.android.FlutterActivity
 

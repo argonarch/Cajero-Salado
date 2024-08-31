@@ -1,6 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cajero_salado">
-   <application
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
         android:label="cajero_salado"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
