@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../assets/variables.dart' as global;
-import '../components/widget_data.dart';
+import 'package:cajero_salado/services/isar_db.dart';
 
 class ViewAddProduct extends StatefulWidget {
+  const ViewAddProduct({super.key});
   @override
   State<ViewAddProduct> createState() => _ViewAddProductState();
 }
@@ -10,23 +10,25 @@ class ViewAddProduct extends StatefulWidget {
 class _ViewAddProductState extends State<ViewAddProduct> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  final TextEditingController benefitController = TextEditingController();
-  late int idNext;
-  late WidgetData itemAgregado;
-  late double priceDouble;
-  late double benefitDouble;
+  final TextEditingController profitController = TextEditingController();
+
+  late String name;
+  late double price;
+  late double profit;
+
   @override
   void dispose() {
+    super.dispose();
     // Clean up the controller when the widget is disposed.
     nameController.dispose();
     priceController.dispose();
-    benefitController.dispose();
-    super.dispose();
+    profitController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Creando Producto")),
+        appBar: AppBar(title: const Text("Creando Producto")),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -36,13 +38,13 @@ class _ViewAddProductState extends State<ViewAddProduct> {
                 child: TextField(
                   controller: nameController,
                   obscureText: false,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Nombre',
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               SizedBox(
@@ -50,22 +52,22 @@ class _ViewAddProductState extends State<ViewAddProduct> {
                 child: TextField(
                   controller: priceController,
                   obscureText: false,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Precio Unitario',
                   ),
                   keyboardType: TextInputType.number,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               SizedBox(
                 width: 300,
                 child: TextField(
-                  controller: benefitController,
+                  controller: profitController,
                   obscureText: false,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Beneficio Esperado',
                   ),
@@ -79,21 +81,20 @@ class _ViewAddProductState extends State<ViewAddProduct> {
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           FloatingActionButton(
             heroTag: null,
-            child: Icon(Icons.delete),
+            child: const Icon(Icons.delete),
             onPressed: () {},
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           FloatingActionButton(
             heroTag: null,
-            child: Icon(Icons.add_circle_outline_rounded),
+            child: const Icon(Icons.add_circle_outline_rounded),
             onPressed: () => {
-              idNext = global.widgetDataList.last.id,
-              priceDouble = double.parse(priceController.text),
-              benefitDouble = double.parse(benefitController.text),
-              itemAgregado = WidgetData(id: idNext, name: nameController.text, precio: priceDouble, beneficio: benefitDouble),
-              global.widgetDataList.add(itemAgregado)
+              name = nameController.text,
+              price = double.parse(priceController.text),
+              profit = double.parse(profitController.text),
+              saveProduct(name, price, profit),
             },
           ),
         ]));

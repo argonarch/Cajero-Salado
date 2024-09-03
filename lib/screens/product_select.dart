@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
-import '../assets/variables.dart' as global;
+import 'package:cajero_salado/models/product.dart';
+import 'package:cajero_salado/services/dolar_api.dart';
 
-class ViewSelectProduct extends StatefulWidget {
+class ScreenSelectProduct extends StatefulWidget {
+  final Product product;
+  const ScreenSelectProduct({super.key, required this.product});
   @override
-  State<ViewSelectProduct> createState() => _ViewSelectProductState();
+  State<ScreenSelectProduct> createState() => _ScreenSelectProductState();
 }
 
-class _ViewSelectProductState extends State<ViewSelectProduct> {
+class _ScreenSelectProductState extends State<ScreenSelectProduct> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  int quantity = 0;
+  int profitIndexed = 0;
   final List<double> values = [1.0, 2.0, 3.0, 6.0, 12.0, 24.00];
   final List<bool> _selectedFruits = <bool>[
     true,
@@ -17,12 +27,12 @@ class _ViewSelectProductState extends State<ViewSelectProduct> {
     false
   ];
   final List<Widget> cantidades = <Widget>[
-    Text("1"),
-    Text("2"),
-    Text("3"),
-    Text("6"),
-    Text("12"),
-    Text("24")
+    const Text("1"),
+    const Text("2"),
+    const Text("3"),
+    const Text("6"),
+    const Text("12"),
+    const Text("24")
   ];
   final List<bool> _selectedCantidades = <bool>[
     true,
@@ -35,8 +45,9 @@ class _ViewSelectProductState extends State<ViewSelectProduct> {
   bool vertical = false;
   @override
   Widget build(BuildContext context) {
+    List<Widget> strings = [];
     return Scaffold(
-        appBar: AppBar(title: Text(global.nameItem)),
+        appBar: AppBar(title: Text(widget.product.name)),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -45,19 +56,19 @@ class _ViewSelectProductState extends State<ViewSelectProduct> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Text(
-                  'Dolar Blue hoy: \$${global.priceDolar.round().toString()}',
-                  style: TextStyle(fontSize: 27.0),
+                  'Dolar Blue hoy: \$${DolarApi.dolarToday.toString()}',
+                  style: const TextStyle(fontSize: 27.0),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 40),
                 child: Text(
-                  "Valor Producto: \$${precioFinal(global.priceItem)}",
-                  style: TextStyle(fontSize: 27.0),
+                  "Valor Producto: \$${precioFinal(widget.product.price.toString())}",
+                  style: const TextStyle(fontSize: 27.0),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 22),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 22),
                 child: Text(
                   "Porcentaje de Beneficio",
                   style: TextStyle(fontSize: 24.0),
@@ -68,7 +79,7 @@ class _ViewSelectProductState extends State<ViewSelectProduct> {
                 child: Wrap(
                   //mainAxisAlignment: MainAxisAlignment.center,
                   spacing: _buttonWidth(context) - 26,
-                  children: [
+                  children: const [
                     Text("0%"),
                     Text("10%"),
                     Text("15%"),
@@ -88,7 +99,7 @@ class _ViewSelectProductState extends State<ViewSelectProduct> {
                       for (int i = 0; i < _selectedFruits.length; i++) {
                         _selectedFruits[i] = i == index;
                       }
-                      global.cantidadBeneficio = index;
+                      profitIndexed = index;
                     });
                   },
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -102,17 +113,17 @@ class _ViewSelectProductState extends State<ViewSelectProduct> {
                   ),
                   isSelected: _selectedFruits,
                   children: <Widget>[
-                    Text("${porcetajeador(0, global.cantidadItems)}"),
-                    Text("\$${porcetajeador(10, global.cantidadItems)}"),
-                    Text("\$${porcetajeador(15, global.cantidadItems)}"),
-                    Text("\$${porcetajeador(20, global.cantidadItems)}"),
-                    Text("\$${porcetajeador(25, global.cantidadItems)}"),
-                    Text("\$${porcetajeador(30, global.cantidadItems)}"),
+                    Text("${porcetajeador(0, quantity)}"),
+                    Text("\$${porcetajeador(10, quantity)}"),
+                    Text("\$${porcetajeador(15, quantity)}"),
+                    Text("\$${porcetajeador(20, quantity)}"),
+                    Text("\$${porcetajeador(25, quantity)}"),
+                    Text("\$${porcetajeador(30, quantity)}"),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 30),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 30),
                 child: Text(
                   "Cantidad de Producto",
                   style: TextStyle(fontSize: 24.0),
@@ -128,7 +139,7 @@ class _ViewSelectProductState extends State<ViewSelectProduct> {
                       for (int i = 0; i < _selectedCantidades.length; i++) {
                         _selectedCantidades[i] = i == index;
                       }
-                      global.cantidadItems = index;
+                      quantity = index;
                     });
                   },
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -151,50 +162,52 @@ class _ViewSelectProductState extends State<ViewSelectProduct> {
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           FloatingActionButton(
             heroTag: null,
-            child: Icon(Icons.close_rounded),
+            child: const Icon(Icons.close_rounded),
             onPressed: () {},
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           FloatingActionButton(
             heroTag: null,
-            child: Icon(Icons.save_as),
-            onPressed: () => {global.strings.add(Padding(
-            padding: const EdgeInsets.only(bottom: 25),
-            child: Column(
-            children: [
-            Text(
-            "Nombre: ${global.nameItem}, Cantidad: ${global.cantidadItems.toString()}"),
-            Text(
-            "Beneficio: ${saberBeneficio()}%, Total: \$${precioFinal(global.priceItem)}")
-            ],
-            ),
-            ))},
+            child: const Icon(Icons.save_as),
+            onPressed: () => {
+              strings.add(Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: Column(
+                  children: [
+                    Text(
+                        "Nombre: ${widget.product.name}, Cantidad: ${quantity.toString()}"),
+                    Text(
+                        "Beneficio: ${saberBeneficio()}%, Total: \$${precioFinal(widget.product.price)}")
+                  ],
+                ),
+              ))
+            },
           ),
         ]));
   }
-}
 
-porcetajeador(double beneficio, int items) {
-  final List<double> values = [1.0, 2.0, 3.0, 6.0, 12.0, 24.00];
-  double precioPorcentual = global.pricePesos * beneficio * values[items] / 100;
-  return precioPorcentual.round().toString();
-}
+  porcetajeador(double beneficio, int items) {
+    final List<double> values = [1.0, 2.0, 3.0, 6.0, 12.0, 24.00];
+    double precioPorcentual =
+        widget.product.priceWithProfit() * values[items] / 100;
+    return precioPorcentual.round().toString();
+  }
 
-precioFinal(precio) {
-  final List<double> values = [1.0, 2.0, 3.0, 6.0, 12.0, 24.00];
-  final List<double> porcentajes = [0.00, 10.0, 15.0, 20.0, 25.0, 30.0];
-  double precioFinal = precio *
-      global.priceDolar *
-      values[global.cantidadItems] *
-      (1 + porcentajes[global.cantidadBeneficio] / 100);
-  return precioFinal.round().toString();
-}
+  precioFinal(precio) {
+    final List<double> values = [1.0, 2.0, 3.0, 6.0, 12.0, 24.00];
+    final List<double> porcentajes = [0.00, 10.0, 15.0, 20.0, 25.0, 30.0];
+    double precioFinal = DolarApi.convertToDolars(precio) *
+        values[quantity] *
+        (1 + porcentajes[profitIndexed] / 100);
+    return precioFinal.round().toString();
+  }
 
-saberBeneficio() {
-  final List<double> porcentajes = [0.00, 10.0, 15.0, 20.0, 25.0, 30.0];
-  return porcentajes[global.cantidadBeneficio].round().toString();
+  saberBeneficio() {
+    final List<double> porcentajes = [0.00, 10.0, 15.0, 20.0, 25.0, 30.0];
+    return porcentajes[profitIndexed].round().toString();
+  }
 }
 
 double _buttonWidth(BuildContext context) {

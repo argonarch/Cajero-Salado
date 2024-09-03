@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'screens/main_screen.dart';
+import 'package:logger/logger.dart';
+import 'package:cajero_salado/screens/main.dart';
+import 'package:cajero_salado/variables.dart' as global;
+import 'package:cajero_salado/services/dropbox_api.dart';
+
+Logger logger = Logger();
 
 void main() async {
-  await GetStorage.init();
-  //GetStorage().erase();
-  runApp(MyApp());
+  runApp(const MyApp());
+  global.products = await DropboxApi().getProducts();
 }
 
 class MyApp extends StatelessWidget {
@@ -16,8 +19,8 @@ class MyApp extends StatelessWidget {
         title: "Cajero Salado",
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-        useMaterial3: true,
-      ),
-        home: MainScreen());
+          useMaterial3: true,
+        ),
+        home: const MainScreen());
   }
 }
